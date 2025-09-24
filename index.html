@@ -921,7 +921,21 @@ footer .text {
         top: -3px;
         right: -3px;
     }
+    /* Popup de login en móvil */
+    .user-auth {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        right: auto;
+        width: 50%;
+        max-width: 200px;
+        z-index: 100;
+    }
     
+    .user-auth::before {
+        display: none;
+    }
     #logout-btn {
         padding: 6px 10px;
         font-size: 11px;
@@ -1489,6 +1503,7 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 </body>
 </html>
+
 
 
 
