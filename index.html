@@ -1362,65 +1362,76 @@ document.addEventListener('DOMContentLoaded', () => {
         carritoDiv.style.display = 'none';
     }
 
-   // Login y registro
-const loginPopup = document.getElementById("login-popup");
-const overlay = document.getElementById("overlay"); // <-- nuevo
-const logoutBtn = document.getElementById("logout-btn");
+ // Login y registro
+    const loginPopup = document.getElementById("login-popup");
+    const logoutBtn = document.getElementById("logout-btn");
 
-window.toggleLogin = function() {
-    const isVisible = loginPopup.style.display === "flex";
-    loginPopup.style.display = isVisible ? "none" : "flex";
-    overlay.style.display = isVisible ? "none" : "block"; // <-- control overlay
-};
-
-window.validarLogin = function() {
-    const user = document.getElementById('usuario').value;
-    const pass = document.getElementById('clave').value;
-    
-    if (user === 'admin' && pass === '1234') {
-        alert('¡Bienvenido a Despensa Chakupe!');
-        loginPopup.style.display = "none";
-        overlay.style.display = "none"; // <-- ocultar overlay
-        logoutBtn.style.display = "inline-block";
-        isLoggedIn = true;
-        // Limpiar campos
-        document.getElementById('usuario').value = '';
-        document.getElementById('clave').value = '';
-    } else {
-        alert('Usuario o contraseña incorrectos.');
+    window.toggleLogin = function() {
+        loginPopup.style.display = (loginPopup.style.display === "flex") ? "none" : "flex";
     }
-};
 
-window.toggleRegister = function() {
-    const newUser = document.getElementById('usuario').value;
-    const newPass = document.getElementById('clave').value;
-    
-    if (newUser && newPass) {
-        alert(`¡Registro exitoso! El usuario "${newUser}" ha sido creado. Ahora puedes iniciar sesión.`);
-        loginPopup.style.display = "none";
-        overlay.style.display = "none"; // <-- ocultar overlay
-        document.getElementById('usuario').value = '';
-        document.getElementById('clave').value = '';
-    } else {
-        alert('Por favor, ingresa un usuario y una contraseña para registrarte.');
+    window.validarLogin = function() {
+        const user = document.getElementById('usuario').value;
+        const pass = document.getElementById('clave').value;
+        
+        if (user === 'admin' && pass === '1234') {
+            alert('¡Bienvenido a Despensa Chakupe!');
+            loginPopup.style.display = "none";
+            logoutBtn.style.display = "inline-block";
+            isLoggedIn = true;
+            // Limpiar campos
+            document.getElementById('usuario').value = '';
+            document.getElementById('clave').value = '';
+        } else {
+            alert('Usuario o contraseña incorrectos.');
+        }
     }
-};
+    
+    window.toggleRegister = function() {
+        const newUser = document.getElementById('usuario').value;
+        const newPass = document.getElementById('clave').value;
+        
+        if (newUser && newPass) {
+            alert(`¡Registro exitoso! El usuario "${newUser}" ha sido creado. Ahora puedes iniciar sesión.`);
+            loginPopup.style.display = "none";
+            document.getElementById('usuario').value = '';
+            document.getElementById('clave').value = '';
+        } else {
+            alert('Por favor, ingresa un usuario y una contraseña para registrarte.');
+        }
+    }
 
-window.cerrarSesion = function() {
-    alert('Sesión cerrada.');
-    logoutBtn.style.display = "none";
-    isLoggedIn = false;
-    // Limpiar carrito al cerrar sesión
-    carrito.length = 0;
-    actualizarCarrito();
-    cerrarCarrito();
-};
+    window.cerrarSesion = function() {
+        alert('Sesión cerrada.');
+        logoutBtn.style.display = "none";
+        isLoggedIn = false;
+        // Limpiar carrito al cerrar sesión
+        carrito.length = 0;
+        actualizarCarrito();
+        cerrarCarrito();
+    }
 
-// Cerrar popups al hacer clic en overlay
-overlay.addEventListener("click", function() {
-    loginPopup.style.display = "none";
-    overlay.style.display = "none";
-});
+    // Cerrar popups al hacer clic fuera
+    document.addEventListener("click", function(e) {
+        const userIcon = document.querySelector(".user-icon");
+        const cartIcon = document.querySelector(".cart-icon");
+
+        // Cerrar login popup
+        if (loginPopup.style.display === "flex" && 
+            !loginPopup.contains(e.target) && 
+            !userIcon.contains(e.target)) {
+            loginPopup.style.display = "none";
+        }
+
+        // Cerrar carrito
+        if (carritoDiv.style.display === "block" && 
+            !carritoDiv.contains(e.target) && 
+            !cartIcon.contains(e.target) &&
+            !e.target.classList.contains('add-to-cart')) {
+            cerrarCarrito();
+        }
+    });
+
 
     // Enviar pedido por WhatsApp
     window.enviarPedidoWhatsApp = function() {
