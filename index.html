@@ -62,13 +62,13 @@ body::before {
     justify-content: space-between;
     align-items: center;
     flex-wrap: nowrap;
-    gap: 15px;
-    padding: 10px 0;
+    gap: 20px; /* un poquito más de aire */
+    padding: 10px 20px;
 }
 
 /* Logo */
 .logo-container {
-    order: 1;
+    flex: 0 0 auto; /* evita que se estire */
     display: flex;
     align-items: center;
 }
@@ -88,9 +88,8 @@ body::before {
 
 /* Título */
 .titulo {
-    order: 2;
+    flex: 1; /* ocupa espacio central */
     text-align: center;
-    flex-grow: 1;
 }
 
 .titulo h1 {
@@ -99,55 +98,39 @@ body::before {
     font-size: 2.5em;
     margin: 0;
     text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8);
+    white-space: nowrap; /* evita que salte de línea */
+    overflow: hidden;
+    text-overflow: ellipsis; /* pone "..." si es demasiado largo */
 }
 
 /* Iconos de usuario y carrito */
 .user-cart {
-    order: 3;
+    flex: 0 0 auto; /* que no se expanda */
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 20px; /* espacio entre íconos */
     color: white;
     position: relative;
     z-index: 100;
 }
 
 .user-icon, .cart-icon {
-    position: relative;
-    width: 40px;
-    height: 40px;
-    font-size: 18px;
     cursor: pointer;
-    border-radius: 50%;
-    background-color: rgba(255, 255, 255, 0.1);
-    transition: all 0.3s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 101;
-}
-
-.user-icon:hover, .cart-icon:hover {
-    background-color: rgba(255, 255, 255, 0.2);
-    transform: scale(1.1);
+    font-size: 22px;
+    position: relative;
 }
 
 .cart-count {
     position: absolute;
     top: -5px;
-    right: -5px;
-    background-color: #d32f2f;
+    right: -10px;
+    background: red;
     color: white;
     font-size: 12px;
-    min-width: 18px;
-    height: 18px;
+    padding: 2px 6px;
     border-radius: 50%;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    line-height: 1;
 }
+
 
 #logout-btn {
     background-color: #dc3545;
@@ -165,24 +148,35 @@ body::before {
     background-color: #c82333;
 }
 
-/* Login Popup */
 .user-auth {
-    position: absolute;
-    top: 50px;
-    right: 0;
-    background-color: white;
-    border: 1px solid #ccc;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.4);
-    display: none;
-    flex-direction: column;
-    gap: 15px;
-    z-index: 100;
-    min-width: 280px;
-    color: #333;
-    backdrop-filter: blur(5px);
+ position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+  display: none;
+  flex-direction: column;
+  gap: 15px;
+  z-index: 1001; /* más alto que el overlay */
+  min-width: 280px;
+  max-width: 90%;
+  color: #333;
 }
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: none;
+  z-index: 999; 
+}
+
 
 .user-auth::before {
     content: '';
@@ -204,10 +198,11 @@ body::before {
 }
 
 .user-auth input {
-    padding: 12px;
+    width: 100%;
+    padding: 10px;
     border: 1px solid #ddd;
     border-radius: 4px;
-    font-size: 14px;
+    font-size: 16px;
 }
 
 .user-auth button {
@@ -217,7 +212,8 @@ body::before {
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    font-size: 14px;
+    width: 100%;
+    font-size: 16px;
     transition: background-color 0.3s;
 }
 
@@ -923,24 +919,21 @@ footer .text {
     }
     /* Popup de login en móvil */
     .user-auth {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        right: auto;
-        width: 50%;
-        max-width: 200px;
-        z-index: 100;
-    }
-    
-    .user-auth::before {
-        display: none;
-    }
-    #logout-btn {
-        padding: 6px 10px;
-        font-size: 11px;
-    }
-    
+    width: 90%;             /* ocupa casi todo el ancho */
+    max-width: 320px;
+    padding: 10px;
+  }
+  .user-auth input {
+    font-size: 0.8em;
+    padding: 10px;
+  }
+
+  .user-auth button {
+    font-size: 0.8em;
+    padding: 10px;
+  }
+}
+
     /* Productos optimizados para 375px */
     .precio-container {
         grid-template-columns: repeat(2, 1fr);
@@ -1057,7 +1050,7 @@ footer .text {
         width: 32px;
         height: 32px;
     }
-}
+
 
 /* Para pantallas muy pequeñas (menos de 350px) */
 @media (max-width: 350px) {
@@ -1080,34 +1073,43 @@ footer .text {
 <body>
 
 <header class="main-header">
-    <div class="header-inner">
-        <div class="logo-container">
-            <img src="logochakupe.jpg" alt="Logo de chakupe">
-        </div>
-
-        <div class="titulo">
-            <h1>GRAN DESPENSA MOCHE</h1>
-        </div>
-
-        <nav class="user-cart">
-            <div class="user-icon">
-                <i class="fas fa-user" onclick="toggleLogin()"></i>
-                <div class="user-auth" id="login-popup">
-                    <span class="cerrar" onclick="toggleLogin()">✖</span>
-                    <input type="text" id="usuario" placeholder="Usuario">
-                    <input type="password" id="clave" placeholder="Contraseña">
-                    <button onclick="validarLogin()">Iniciar Sesión</button>
-                    <button onclick="toggleRegister()">Registrarse</button>
-                </div>
-            </div>
-            <div class="cart-icon">
-                <i class="fas fa-shopping-cart" onclick="mostrarCarrito()"></i>
-                <span class="cart-count" id="cart-count">0</span>
-            </div>
-            <button id="logout-btn" onclick="cerrarSesion()">Cerrar sesión</button>
-        </nav>
+  <div class="header-inner">
+    <!-- Logo -->
+    <div class="logo-container">
+      <img src="logochakupe.jpg" alt="Logo de chakupe">
     </div>
+
+    <!-- Título -->
+    <div class="titulo">
+      <h1>GRAN DESPENSA MOCHE</h1>
+    </div>
+
+    <!-- User + Carrito -->
+    <nav class="user-cart">
+      <div class="user-icon">
+        <i class="fas fa-user" onclick="toggleLogin()"></i>
+      </div>
+
+      <div class="cart-icon">
+        <i class="fas fa-shopping-cart" onclick="mostrarCarrito()"></i>
+        <span class="cart-count" id="cart-count">0</span>
+      </div>
+
+      <button id="logout-btn" onclick="cerrarSesion()">Cerrar sesión</button>
+    </nav>
+  </div>
 </header>
+
+<!-- Popup de login flotante (FUERA del header/nav) -->
+<div class="overlay" id="overlay"></div>
+<div class="user-auth" id="login-popup">
+  <span class="cerrar" onclick="toggleLogin()">✖</span>
+  <input type="text" id="usuario" placeholder="Usuario">
+  <input type="password" id="clave" placeholder="Contraseña">
+  <button onclick="validarLogin()">Iniciar Sesión</button>
+  <button onclick="toggleRegister()">Registrarse</button>
+</div>
+
 
 <main class="precio-container" id="productos">
     <div class="precio-item" data-product-id="1" data-product-name="CHOLO NUMBER GUAN" data-product-price="180.00">
@@ -1242,6 +1244,16 @@ footer .text {
         <button class="cerrar-cart-btn" onclick="cerrarCarrito()">Cerrar</button>
     </div>
 </div>
+<!-- Login Modal -->
+<div class="overlay"></div>
+<div class="user-auth" id="login-popup">
+  <span class="cerrar" onclick="toggleLogin()">✖</span>
+  <h3>Iniciar Sesión</h3>
+  <input type="text" id="usuario" placeholder="Usuario">
+  <input type="password" id="clave" placeholder="Contraseña">
+  <button onclick="validarLogin()">Iniciar Sesión</button>
+  <button onclick="toggleRegister()">Registrarse</button>
+</div>
 
 <a class="whatsapp-float" href="https://api.whatsapp.com/send?phone=51991198681&text=Hola!%20Me%20gustaría%20realizar%20un%20pedido." target="_blank">
     <img src="https://img.icons8.com/color/48/000000/whatsapp--v1.png" alt="WhatsApp Icon"/>
@@ -1350,75 +1362,65 @@ document.addEventListener('DOMContentLoaded', () => {
         carritoDiv.style.display = 'none';
     }
 
-    // Login y registro
-    const loginPopup = document.getElementById("login-popup");
-    const logoutBtn = document.getElementById("logout-btn");
+   // Login y registro
+const loginPopup = document.getElementById("login-popup");
+const overlay = document.getElementById("overlay"); // <-- nuevo
+const logoutBtn = document.getElementById("logout-btn");
 
-    window.toggleLogin = function() {
-        loginPopup.style.display = (loginPopup.style.display === "flex") ? "none" : "flex";
-    }
+window.toggleLogin = function() {
+    const isVisible = loginPopup.style.display === "flex";
+    loginPopup.style.display = isVisible ? "none" : "flex";
+    overlay.style.display = isVisible ? "none" : "block"; // <-- control overlay
+};
 
-    window.validarLogin = function() {
-        const user = document.getElementById('usuario').value;
-        const pass = document.getElementById('clave').value;
-        
-        if (user === 'admin' && pass === '1234') {
-            alert('¡Bienvenido a Despensa Chakupe!');
-            loginPopup.style.display = "none";
-            logoutBtn.style.display = "inline-block";
-            isLoggedIn = true;
-            // Limpiar campos
-            document.getElementById('usuario').value = '';
-            document.getElementById('clave').value = '';
-        } else {
-            alert('Usuario o contraseña incorrectos.');
-        }
-    }
+window.validarLogin = function() {
+    const user = document.getElementById('usuario').value;
+    const pass = document.getElementById('clave').value;
     
-    window.toggleRegister = function() {
-        const newUser = document.getElementById('usuario').value;
-        const newPass = document.getElementById('clave').value;
-        
-        if (newUser && newPass) {
-            alert(`¡Registro exitoso! El usuario "${newUser}" ha sido creado. Ahora puedes iniciar sesión.`);
-            loginPopup.style.display = "none";
-            document.getElementById('usuario').value = '';
-            document.getElementById('clave').value = '';
-        } else {
-            alert('Por favor, ingresa un usuario y una contraseña para registrarte.');
-        }
+    if (user === 'admin' && pass === '1234') {
+        alert('¡Bienvenido a Despensa Chakupe!');
+        loginPopup.style.display = "none";
+        overlay.style.display = "none"; // <-- ocultar overlay
+        logoutBtn.style.display = "inline-block";
+        isLoggedIn = true;
+        // Limpiar campos
+        document.getElementById('usuario').value = '';
+        document.getElementById('clave').value = '';
+    } else {
+        alert('Usuario o contraseña incorrectos.');
     }
+};
 
-    window.cerrarSesion = function() {
-        alert('Sesión cerrada.');
-        logoutBtn.style.display = "none";
-        isLoggedIn = false;
-        // Limpiar carrito al cerrar sesión
-        carrito.length = 0;
-        actualizarCarrito();
-        cerrarCarrito();
+window.toggleRegister = function() {
+    const newUser = document.getElementById('usuario').value;
+    const newPass = document.getElementById('clave').value;
+    
+    if (newUser && newPass) {
+        alert(`¡Registro exitoso! El usuario "${newUser}" ha sido creado. Ahora puedes iniciar sesión.`);
+        loginPopup.style.display = "none";
+        overlay.style.display = "none"; // <-- ocultar overlay
+        document.getElementById('usuario').value = '';
+        document.getElementById('clave').value = '';
+    } else {
+        alert('Por favor, ingresa un usuario y una contraseña para registrarte.');
     }
+};
 
-    // Cerrar popups al hacer clic fuera
-    document.addEventListener("click", function(e) {
-        const userIcon = document.querySelector(".user-icon");
-        const cartIcon = document.querySelector(".cart-icon");
+window.cerrarSesion = function() {
+    alert('Sesión cerrada.');
+    logoutBtn.style.display = "none";
+    isLoggedIn = false;
+    // Limpiar carrito al cerrar sesión
+    carrito.length = 0;
+    actualizarCarrito();
+    cerrarCarrito();
+};
 
-        // Cerrar login popup
-        if (loginPopup.style.display === "flex" && 
-            !loginPopup.contains(e.target) && 
-            !userIcon.contains(e.target)) {
-            loginPopup.style.display = "none";
-        }
-
-        // Cerrar carrito
-        if (carritoDiv.style.display === "block" && 
-            !carritoDiv.contains(e.target) && 
-            !cartIcon.contains(e.target) &&
-            !e.target.classList.contains('add-to-cart')) {
-            cerrarCarrito();
-        }
-    });
+// Cerrar popups al hacer clic en overlay
+overlay.addEventListener("click", function() {
+    loginPopup.style.display = "none";
+    overlay.style.display = "none";
+});
 
     // Enviar pedido por WhatsApp
     window.enviarPedidoWhatsApp = function() {
@@ -1503,6 +1505,7 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 </body>
 </html>
+
 
 
 
