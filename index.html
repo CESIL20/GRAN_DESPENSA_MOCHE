@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -62,13 +63,13 @@ body::before {
     justify-content: space-between;
     align-items: center;
     flex-wrap: nowrap;
-    gap: 20px; /* un poquito más de aire */
-    padding: 10px 20px;
+    gap: 15px;
+    padding: 10px 0;
 }
 
 /* Logo */
 .logo-container {
-    flex: 0 0 auto; /* evita que se estire */
+    order: 1;
     display: flex;
     align-items: center;
 }
@@ -88,8 +89,9 @@ body::before {
 
 /* Título */
 .titulo {
-    flex: 1; /* ocupa espacio central */
+    order: 2;
     text-align: center;
+    flex-grow: 1;
 }
 
 .titulo h1 {
@@ -98,9 +100,6 @@ body::before {
     font-size: 2.5em;
     margin: 0;
     text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8);
-    white-space: nowrap; /* evita que salte de línea */
-    overflow: hidden;
-    text-overflow: ellipsis; /* pone "..." si es demasiado largo */
 }
 
 /* Iconos de usuario y carrito */
@@ -133,6 +132,7 @@ body::before {
     background-color: rgba(255, 255, 255, 0.2);
     transform: scale(1.1);
 }
+
 .cart-count {
     position: absolute;
     top: -5px;
@@ -150,7 +150,6 @@ body::before {
     line-height: 1;
 }
 
-
 #logout-btn {
     background-color: #dc3545;
     color: white;
@@ -167,8 +166,9 @@ body::before {
     background-color: #c82333;
 }
 
+/* Login Popup */
 .user-auth {
- position: absolute;
+    position: absolute;
     top: 50px;
     right: 0;
     background-color: white;
@@ -184,18 +184,6 @@ body::before {
     color: #333;
     backdrop-filter: blur(5px);
 }
-
-.overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.5);
-  display: none;
-  z-index: 999; 
-}
-
 
 .user-auth::before {
     content: '';
@@ -217,11 +205,10 @@ body::before {
 }
 
 .user-auth input {
-    width: 100%;
-    padding: 10px;
+    padding: 12px;
     border: 1px solid #ddd;
     border-radius: 4px;
-    font-size: 16px;
+    font-size: 14px;
 }
 
 .user-auth button {
@@ -231,8 +218,7 @@ body::before {
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    width: 100%;
-    font-size: 16px;
+    font-size: 14px;
     transition: background-color 0.3s;
 }
 
@@ -937,7 +923,7 @@ footer .text {
         right: -3px;
     }
     /* Popup de login en móvil */
-    .user-auth {
+     .user-auth {
     width: 90%;             /* ocupa casi todo el ancho */
     max-width: 320px;
     padding: 10px;
@@ -951,8 +937,12 @@ footer .text {
     font-size: 0.8em;
     padding: 10px;
   }
-}
-
+    
+    #logout-btn {
+        padding: 6px 10px;
+        font-size: 11px;
+    }
+    
     /* Productos optimizados para 375px */
     .precio-container {
         grid-template-columns: repeat(2, 1fr);
@@ -1069,7 +1059,7 @@ footer .text {
         width: 32px;
         height: 32px;
     }
-
+}
 
 /* Para pantallas muy pequeñas (menos de 350px) */
 @media (max-width: 350px) {
@@ -1092,43 +1082,34 @@ footer .text {
 <body>
 
 <header class="main-header">
-  <div class="header-inner">
-    <!-- Logo -->
-    <div class="logo-container">
-      <img src="logochakupe.jpg" alt="Logo de chakupe">
+    <div class="header-inner">
+        <div class="logo-container">
+            <img src="logochakupe.jpg" alt="Logo de chakupe">
+        </div>
+
+        <div class="titulo">
+            <h1>GRAN DESPENSA MOCHE</h1>
+        </div>
+
+        <nav class="user-cart">
+            <div class="user-icon">
+                <i class="fas fa-user" onclick="toggleLogin()"></i>
+                <div class="user-auth" id="login-popup">
+                    <span class="cerrar" onclick="toggleLogin()">✖</span>
+                    <input type="text" id="usuario" placeholder="Usuario">
+                    <input type="password" id="clave" placeholder="Contraseña">
+                    <button onclick="validarLogin()">Iniciar Sesión</button>
+                    <button onclick="toggleRegister()">Registrarse</button>
+                </div>
+            </div>
+            <div class="cart-icon">
+                <i class="fas fa-shopping-cart" onclick="mostrarCarrito()"></i>
+                <span class="cart-count" id="cart-count">0</span>
+            </div>
+            <button id="logout-btn" onclick="cerrarSesion()">Cerrar sesión</button>
+        </nav>
     </div>
-
-    <!-- Título -->
-    <div class="titulo">
-      <h1>GRAN DESPENSA MOCHE</h1>
-    </div>
-
-    <!-- User + Carrito -->
-    <nav class="user-cart">
-      <div class="user-icon">
-        <i class="fas fa-user" onclick="toggleLogin()"></i>
-      </div>
-
-      <div class="cart-icon">
-        <i class="fas fa-shopping-cart" onclick="mostrarCarrito()"></i>
-        <span class="cart-count" id="cart-count">0</span>
-      </div>
-
-      <button id="logout-btn" onclick="cerrarSesion()">Cerrar sesión</button>
-    </nav>
-  </div>
 </header>
-
-<!-- Popup de login flotante (FUERA del header/nav) -->
-<div class="overlay" id="overlay"></div>
-<div class="user-auth" id="login-popup">
-  <span class="cerrar" onclick="toggleLogin()">✖</span>
-  <input type="text" id="usuario" placeholder="Usuario">
-  <input type="password" id="clave" placeholder="Contraseña">
-  <button onclick="validarLogin()">Iniciar Sesión</button>
-  <button onclick="toggleRegister()">Registrarse</button>
-</div>
-
 
 <main class="precio-container" id="productos">
     <div class="precio-item" data-product-id="1" data-product-name="CHOLO NUMBER GUAN" data-product-price="180.00">
@@ -1263,16 +1244,6 @@ footer .text {
         <button class="cerrar-cart-btn" onclick="cerrarCarrito()">Cerrar</button>
     </div>
 </div>
-<!-- Login Modal -->
-<div class="overlay"></div>
-<div class="user-auth" id="login-popup">
-  <span class="cerrar" onclick="toggleLogin()">✖</span>
-  <h3>Iniciar Sesión</h3>
-  <input type="text" id="usuario" placeholder="Usuario">
-  <input type="password" id="clave" placeholder="Contraseña">
-  <button onclick="validarLogin()">Iniciar Sesión</button>
-  <button onclick="toggleRegister()">Registrarse</button>
-</div>
 
 <a class="whatsapp-float" href="https://api.whatsapp.com/send?phone=51991198681&text=Hola!%20Me%20gustaría%20realizar%20un%20pedido." target="_blank">
     <img src="https://img.icons8.com/color/48/000000/whatsapp--v1.png" alt="WhatsApp Icon"/>
@@ -1381,7 +1352,7 @@ document.addEventListener('DOMContentLoaded', () => {
         carritoDiv.style.display = 'none';
     }
 
- // Login y registro
+    // Login y registro
     const loginPopup = document.getElementById("login-popup");
     const logoutBtn = document.getElementById("logout-btn");
 
@@ -1450,7 +1421,6 @@ document.addEventListener('DOMContentLoaded', () => {
             cerrarCarrito();
         }
     });
-
 
     // Enviar pedido por WhatsApp
     window.enviarPedidoWhatsApp = function() {
@@ -1535,7 +1505,6 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 </body>
 </html>
-
 
 
 
