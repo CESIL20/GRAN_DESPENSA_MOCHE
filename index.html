@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chakupe - Fresh Pricing</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: #D6D6D6;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px 0;
+        }
+
+        .email-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #F3F3F3;
+            position: relative;
+        }
+
+        /* Modal Login/Register */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+        }
+
+        .modal-header {
+            font-size: 24px;
+            font-weight: 500;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #45a049;
+        }
+
+        .btn-secondary {
+            background: #2196F3;
+            color: white;
+            margin-top: 10px;
+        }
+
+        .btn-secondary:hover {
+            background: #1976D2;
+        }
+
+        .toggle-form {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .toggle-form a {
+            color: #2196F3;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        /* User Info Bar */
+        .user-bar {
+            background: #313533;
+            padding: 10px 20px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .user-info {
+            font-size: 14px;
+        }
+
+        .logout-btn {
+            background: transparent;
+            border: 1px solid white;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .logout-btn:hover {
+            background: white;
+            color: #313533;
+        }
+
+        /* Header */
+        .header {
+            background: #F3F3F3;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .view-browser {
+            font-size: 13px;
+            color: #333;
+            margin-top: 10px;
+        }
+
+        .view-browser a {
+            color: #333;
+            text-decoration: underline;
+        }
+
+        /* Main Title Section */
+        .title-section {
+            background: #F3F3F3;
+            padding: 36px 20px 20px;
+            text-align: center;
+        }
+
+        .main-title {
+            font-size: 30px;
+            font-weight: 400;
+            letter-spacing: 2px;
+            color: #313533;
+            margin-bottom: 10px;
+        }
+
+        .date-text {
+            font-size: 16px;
+            color: #313533;
+        }
+
+        /* CTA Button */
+        .cta-section {
+            background: #F3F3F3;
+            padding: 20px 30px 36px;
+            text-align: center;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 15px 10px;
+            border: 1px solid #313533;
+            background: #F3F3F3;
+            color: #313533;
+            text-decoration: none;
+            letter-spacing: 2px;
+            font-size: 16px;
+            font-weight: 400;
+            transition: all 0.3s ease;
+        }
+
+        .cta-button:hover {
+            background: #313533;
+            color: #F3F3F3;
+        }
+
+        /* Category Header */
+        .category-header {
+            background: #313533;
+            padding: 36px 26px;
+            text-align: center;
+        }
+
+        .category-header.light {
+            background: #B08D2C;
+        }
+
+        .category-title {
+            font-size: 32px;
+            font-weight: 400;
+            letter-spacing: 2px;
+            color: #F3F3F3;
+            margin-bottom: 10px;
+        }
+
+        .category-description {
+            font-size: 16px;
+            color: #F3F3F3;
+            line-height: 1.5;
+        }
+
+        /* Product Row */
+        .product-row {
+            background: #F3F3F3;
+            padding: 12px;
+            display: table;
+            width: 100%;
+        }
+
+        .product-row.dark {
+            background: #313533;
+        }
+
+        .product-content {
+            display: table-row;
+        }
+
+        .product-text {
+            display: table-cell;
+            vertical-align: middle;
+            padding: 20px;
+            width: 60%;
+        }
+
+        .product-text.right {
+            text-align: right;
+        }
+
+        .product-image-cell {
+            display: table-cell;
+            vertical-align: middle;
+            width: 40%;
+            padding: 0 12px;
+        }
+
+        .product-image {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .product-name {
+            font-size: 24px;
+            font-weight: 400;
+            letter-spacing: 2px;
+            color: #313533;
+            margin-bottom: 10px;
+        }
+
+        .product-row.dark .product-name {
+            color: #F3F3F3;
+        }
+
+        .product-desc {
+            font-size: 16px;
+            color: #313533;
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+
+        .product-row.dark .product-desc {
+            color: #F3F3F3;
+        }
+
+        .product-price {
+            font-size: 16px;
+            color: #313533;
+            font-weight: 400;
+            margin-bottom: 15px;
+        }
+
+        .product-row.dark .product-price {
+            color: #F3F3F3;
+        }
+
+        .quantity-controls {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .qty-btn {
+            background: #2196F3;
+            color: white;
+            border: none;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .qty-btn:hover {
+            background: #1976D2;
+            transform: scale(1.1);
+        }
+
+        .qty-display {
+            background: white;
+            color: #333;
+            border: 2px solid #ddd;
+            width: 50px;
+            height: 35px;
+            text-align: center;
+            font-size: 16px;
+            font-weight: bold;
+            line-height: 31px;
+            border-radius: 5px;
+        }
+
+        .add-to-cart-btn {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .add-to-cart-btn:hover {
+            background: #45a049;
+            transform: scale(1.05);
+        }
+
+        .add-to-cart-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        /* Cart Float Button */
+        .cart-float {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            background: #2196F3;
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(33, 149, 243, 0.3);
+            z-index: 999;
+            transition: all 0.3s ease;
+        }
+
+        .cart-float:hover {
+            transform: scale(1.1);
+        }
+
+        .cart-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #f44336;
+            color: white;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        /* Cart Modal */
+        .cart-items {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .cart-total {
+            font-size: 18px;
+            font-weight: bold;
+            text-align: right;
+            margin: 20px 0;
+            color: #333;
+        }
+
+        /* Footer */
+        .footer {
+            background: #303133;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .social-icons {
+            margin: 15px 0;
+        }
+
+        .social-icons a {
+            display: inline-block;
+            margin: 0 5px;
+        }
+
+        .footer-text {
+            font-size: 12px;
+            color: #FFFFFF;
+            line-height: 1.5;
+        }
+
+        .footer-text a {
+            color: #FFFFFF;
+            text-decoration: underline;
+        }
+
+        /* WhatsApp Float */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: #25D366;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            color: white;
+            text-decoration: none;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+            z-index: 998;
+            transition: all 0.3s ease;
+        }
+
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+        }
+
+        /* Mobile Responsive */
+        @media only screen and (max-width: 480px) {
+            body {
+                padding: 10px 0;
+            }
+
+            .main-title {
+                font-size: 24px;
+            }
+
+            .category-title {
+                font-size: 26px;
+            }
+
+            .product-row {
+                display: block;
+            }
+
+            .product-content {
+                display: block;
+            }
+
+            .product-text,
+            .product-image-cell {
+                display: block;
+                width: 100%;
+                padding: 10px;
+            }
+
+            .product-text.right {
+                text-align: left;
+            }
+
+            .product-name {
+                font-size: 20px;
+            }
+
+            .product-desc,
+            .product-price {
+                font-size: 14px;
+            }
+
+            .cart-float {
+                bottom: 80px;
+                right: 20px;
+                width: 50px;
+                height: 50px;
+            }
+
+            .whatsapp-float {
+                bottom: 20px;
+                right: 20px;
+                width: 50px;
+                height: 50px;
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login/Register Modal -->
+    <div id="authModal" class="modal">
+        <div class="modal-content">
+            <div id="loginForm">
+                <h3 class="modal-header">Iniciar Sesión</h3>
+                <div class="form-group">
+                    <label>Correo electrónico</label>
+                    <input type="email" id="loginEmail" placeholder="tu@email.com">
+                </div>
+                <div class="form-group">
+                    <label>Contraseña</label>
+                    <input type="password" id="loginPassword" placeholder="••••••••">
+                </div>
+                <button class="btn btn-primary" onclick="login()">Iniciar Sesión</button>
+                <div class="toggle-form">
+                    ¿No tienes cuenta? <a onclick="showRegister()">Regístrate aquí</a>
+                </div>
+            </div>
+
+            <div id="registerForm" style="display: none;">
+                <h3 class="modal-header">Registrarse</h3>
+                <div class="form-group">
+                    <label>Nombre completo</label>
+                    <input type="text" id="regName" placeholder="Juan Pérez">
+                </div>
+                <div class="form-group">
+                    <label>Correo electrónico</label>
+                    <input type="email" id="regEmail" placeholder="tu@email.com">
+                </div>
+                <div class="form-group">
+                    <label>Teléfono (WhatsApp)</label>
+                    <input type="tel" id="regPhone" placeholder="+51 999 999 999">
+                </div>
+                <div class="form-group">
+                    <label>Contraseña</label>
+                    <input type="password" id="regPassword" placeholder="••••••••">
+                </div>
+                <button class="btn btn-primary" onclick="register()">Registrarse</button>
+                <div class="toggle-form">
+                    ¿Ya tienes cuenta? <a onclick="showLogin()">Inicia sesión aquí</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart Modal -->
+    <div id="cartModal" class="modal">
+        <div class="modal-content">
+            <h3 class="modal-header">Mi Carrito</h3>
+            <div class="cart-items" id="cartItems"></div>
+            <div class="cart-total" id="cartTotal">Total: S/. 0.00</div>
+            <button class="btn btn-primary" onclick="sendToWhatsApp()">Enviar Pedido por WhatsApp</button>
+            <button class="btn btn-secondary" onclick="closeCart()">Cerrar</button>
+        </div>
+    </div>
+
+    <div class="email-container">
+        <!-- User Bar -->
+        <div id="userBar" class="user-bar" style="display: none;">
+            <div class="user-info">
+                Bienvenido, <span id="userName"></span>
+            </div>
+            <button class="logout-btn" onclick="logout()">Cerrar Sesión</button>
+        </div>
+
+        <!-- Header -->
+        <div class="header">
+            <div style="font-size: 32px; font-weight: 300; letter-spacing: 4px; color: #333; margin-bottom: 5px;">CHAKUPE</div>
+            <div style="font-size: 12px; letter-spacing: 3px; color: #666;">LA GRAN DESPENSA MOCHE</div>
+            <div class="view-browser">
+                <a href="#">Ver en tu Navegador</a>
+            </div>
+        </div>
+
+        <!-- Main Title -->
+        <div class="title-section">
+            <h2 class="main-title">FRESH PRICING</h2>
+        </div>
+
+        <!-- CTA Button -->
+        <div class="cta-section">
+            <a href="#" class="cta-button">VER LISTA COMPLETA DE PRECIOS</a>
+        </div>
+
+        <!-- Category: Productos -->
+        <div class="category-header">
+            <h3 class="category-title">ALTA GAMA</h3>
+            <p class="category-description">Nuestra selecta colección de productos peruanos artesanales está disponible con los mejores precios.</p>
+        </div>
+        <!-- Product 1 -->
+        <div class="product-row">
+            <div class="product-content">
+                <div class="product-text right">
+                    <h4 class="product-name">LA PELIRROJA 375ML</h4>
+                    <p class="product-desc">Cerveza Premiun, mezcla equilibrada con ocho lúpulos, levadura tipo lager con sabor único.</p>
+                    <p class="product-price">S/. 35.00</p>
+                    <div class="quantity-controls">
+                        <button class="qty-btn" onclick="decreaseQty(1)">-</button>
+                        <div class="qty-display" id="qty-1">1</div>
+                        <button class="qty-btn" onclick="increaseQty(1)">+</button>
+                    </div>
+                    <br>
+                    <button class="add-to-cart-btn" onclick="addToCart('La Pelirroja 375ML', 35.00, 1)">
+                        Añadir al Carrito
+                    </button>
+                </div>
+                <div class="product-image-cell">
+                    <img src="peliroja negra black (1).jpg" alt="" class="product-image">
+                </div>
+            </div>
+        </div>
+
+        <!-- Product 2 -->
+        <div class="product-row dark">
+            <div class="product-content">
+                <div class="product-image-cell">
+                    <img src="pelirroja fourpack (1).jpg" alt="PELIRROJA FOURPACK 375ML" class="product-image">
+                </div>
+                <div class="product-text">
+                    <h4 class="product-name">PELIRROJA FOURPACK 375ML</h4>
+                    <p class="product-desc">Cerveza Premiun, mezcla equilibrada con ocho lúpulos, levadura tipo lager con sabor único.</p>
+                    <p class="product-price">S/. 140.00</p>
+                    <div class="quantity-controls">
+                        <button class="qty-btn" onclick="decreaseQty(2)">-</button>
+                        <div class="qty-display" id="qty-2">1</div>
+                        <button class="qty-btn" onclick="increaseQty(2)">+</button>
+                    </div>
+                    <br>
+                    <button class="add-to-cart-btn" onclick="addToCart('PELIRROJA FOURPACK 375ML', 99.00, 2)">
+                        Añadir al Carrito
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product 3 -->
+        <div class="product-row">
+            <div class="product-content">
+                <div class="product-text right">
+                    <h4 class="product-name">ORO LIQUIDO 330ML</h4>
+                    <p class="product-desc">Cerveza de Alta gama, color dorado, suave y equilibrada. Su amargor sutil, permite disfrutar plenamente de los aromas frescos de los lúpulos seleccionados.</p>
+                    <p class="product-price">S/. 16.00</p>
+                    <div class="quantity-controls">
+                        <button class="qty-btn" onclick="decreaseQty(3)">-</button>
+                        <div class="qty-display" id="qty-3">1</div>
+                        <button class="qty-btn" onclick="increaseQty(3)">+</button>
+                    </div>
+                    <br>
+                    <button class="add-to-cart-btn" onclick="addToCart('ORO LIQUIDO 330ML', 99.00, 3)">
+                        Añadir al Carrito
+                    </button>
+                </div>
+                <div class="product-image-cell">
+                    <img src="oro liquido grupo (1).jpg" alt="Oro liquido" class="product-image">
+                </div>
+            </div>
+        </div>
+        <!-- Product 4 -->
+        <div class="product-row dark">
+            <div class="product-content">
+                <div class="product-image-cell">
+                    <img src="pisco caja dentro.jpg" alt="pisco caja dentro" class="product-image">
+                </div>
+                <div class="product-text">
+                    <h4 class="product-name">CHOLO NUMBER GUAN 750ML</h4>
+                    <p class="product-desc">Elaborado con ingredientes naturales selectos, este producto destaca por su pureza y sabor auténtico.</p>
+                    <p class="product-price">S/. 99.00 x UND</p>
+                    <div class="quantity-controls">
+                        <button class="qty-btn" onclick="decreaseQty(4)">-</button>
+                        <div class="qty-display" id="qty-2">1</div>
+                        <button class="qty-btn" onclick="increaseQty(4)">+</button>
+                    </div>
+                    <br>
+                    <button class="add-to-cart-btn" onclick="addToCart('CHOLO NUMBER GUAN 750ML', 99.00, )">
+                        Añadir al Carrito
+                    </button>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Product 4 -->
+        <div class="product-row">
+            <div class="product-content">
+                <div class="product-text right">
+                    <h4 class="product-name">VINAGRE EL DANDY 500ML</h4>
+                    <p class="product-desc">Vinagre de Uva Italia, es un producto natural elaborado con uvas seleccionadas de la variedad Italia. Su sabor suave lo convierte en el acompañante ideal para ensaladas, aderezos, marinados y preparaciones gourmet.</p>
+                    <p class="product-price">S/. 180.00</p>
+                    <div class="quantity-controls">
+                        <button class="qty-btn" onclick="decreaseQty(4)">-</button>
+                        <div class="qty-display" id="qty-1">1</div>
+                        <button class="qty-btn" onclick="increaseQty(4)">+</button>
+                    </div>
+                    <br>
+                    <button class="add-to-cart-btn" onclick="addToCart('VINAGRE EL DANDY 500ML', 180.00, 4)">
+                        Añadir al Carrito
+                    </button>
+                </div>
+                <div class="product-image-cell">
+                    <img src="VINAGRE DANDY (1).jpeg" alt="VINAGRE" class="product-image">
+                </div>
+            </div>
+        </div>
+
+        <!-- Product 5 -->
+        <div class="product-row dark">
+            <div class="product-content">
+                <div class="product-image-cell">
+                    <img src="DJ VINAGRE DANDY (1).jpeg" alt="VINAGRE" class="product-image">
+                </div>
+                <div class="product-text">
+                    <h4 class="product-name">DJ VINAGRE EL DANDY 4LTS</h4>
+                    <p class="product-desc">Vinagre de Uva Italia, es un producto natural elaborado con uvas seleccionadas de la variedad Italia. Su sabor suave lo convierte en el acompañante ideal para ensaladas, aderezos, marinados y preparaciones gourmet.</p>
+                    <p class="product-price">S/. 120.00</p>
+                    <div class="quantity-controls">
+                        <button class="qty-btn" onclick="decreaseQty(5)">-</button>
+                        <div class="qty-display" id="qty-2">1</div>
+                        <button class="qty-btn" onclick="increaseQty(5)">+</button>
+                    </div>
+                    <br>
+                    <button class="add-to-cart-btn" onclick="addToCart('VINAGRE EL DANDY 500ML', 120.00, 5)">
+                        Añadir al Carrito
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        
+        <!-- Category: Specialty -->
+        <div class="category-header light">
+            <h3 class="category-title">PRODUCTOS ESPECIALES</h3>
+            <p class="category-description">Descubre nuestra línea de productos únicos con sabores tradicionales del Perú.</p>
+        </div>
+
+        <!-- Product 6 -->
+        <div class="product-row">
+            <div class="product-content">
+                <div class="product-text right">
+                    <h4 class="product-name">DJ JORA NATURAL 4LTS</h4>
+                    <p class="product-desc">Vinagre de Uva Italia, es un producto natural elaborado con uvas seleccionadas de la variedad Italia. Su sabor suave lo convierte en el acompañante ideal para ensaladas, aderezos, marinados y preparaciones gourmet.</p>
+                    <p class="product-price">S/. 100.00</p>
+                    <div class="quantity-controls">
+                        <button class="qty-btn" onclick="decreaseQty(6)">-</button>
+                        <div class="qty-display" id="qty-1">1</div>
+                        <button class="qty-btn" onclick="increaseQty()">+</button>
+                    </div>
+                    <br>
+                    <button class="add-to-cart-btn" onclick="addToCart('DJ JORA NATURAL 4LTS', 100.00, 7)">
+                        Añadir al Carrito
+                    </button>
+                </div>
+                <div class="product-image-cell">
+                    <img src="DJ jora natural (1).jpg" alt="DJ jora natural" class="product-image">
+                </div>
+            </div>
+        </div>
+
+        <!-- Product 8 -->
+        <div class="product-row dark">
+            <div class="product-content">
+                <div class="product-image-cell">
+                    <img src="DJ jora membrillo (1).jpg" alt="VINAGRE" class="product-image">
+                </div>
+                <div class="product-text">
+                    <h4 class="product-name">DJ JORA MEMBRILLO 4LTS</h4>
+                    <p class="product-desc">Bebida norteña artesanal de membrillo,fermentada,fresca con aroma frutal.</p>
+                    <p class="product-price">S/. 120.00</p>
+                    <div class="quantity-controls">
+                        <button class="qty-btn" onclick="decreaseQty(8)">-</button>
+                        <div class="qty-display" id="qty-2">1</div>
+                        <button class="qty-btn" onclick="increaseQty(8)">+</button>
+                    </div>
+                    <br>
+                    <button class="add-to-cart-btn" onclick="addToCart('DJ JORA MEMBRILLO 4LTS', 100.00, 8)">
+                        Añadir al Carrito
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Product 9 -->
+        <div class="product-row">
+            <div class="product-content">
+                <div class="product-text right">
+                    <h4 class="product-name">DJ JORA MAÍZ MORADO 4LTS</h4>
+                    <p class="product-desc">Bebida artesanal, fermentada de maíz morado, natural,refrescante y lleno de tradición.</p>
+                    <p class="product-price">S/. 180.00</p>
+                    <div class="quantity-controls">
+                        <button class="qty-btn" onclick="decreaseQty(9)">-</button>
+                        <div class="qty-display" id="qty-1">1</div>
+                        <button class="qty-btn" onclick="increaseQty(9)">+</button>
+                    </div>
+                    <br>
+                    <button class="add-to-cart-btn" onclick="addToCart('DJ JORA MAÍZ MORADO 4LTS', 100.00, 9)">
+                        Añadir al Carrito
+                    </button>
+                </div>
+                <div class="product-image-cell">
+                    <img src="DJ jora maiz morado (1).jpg" alt="DJ jora maiz morado" class="product-image">
+                </div>
+            </div>
+        </div>
+
+        <!-- Product 10 -->
+        <div class="product-row dark">
+            <div class="product-content">
+                <div class="product-image-cell">
+                    <img src="Loche Vertical (1).jpg" alt="Loche" class="product-image">
+                </div>
+                <div class="product-text">
+                    <h4 class="product-name">LOCHE KG</h4>
+                    <p class="product-desc">Insumo único de la gastronomía peruana. Con su aroma y sabor dulce aporta identidad a platos tradicionales como el seco de cabrito y el pepián.</p>
+                    <p class="product-price">S/. 40.00</p>
+                    <div class="quantity-controls">
+                        <button class="qty-btn" onclick="decreaseQty(10)">-</button>
+                        <div class="qty-display" id="qty-2">1</div>
+                        <button class="qty-btn" onclick="increaseQty(10)">+</button>
+                    </div>
+                    <br>
+                    <button class="add-to-cart-btn" onclick="addToCart('LOCHE KG', 40.00, 10)">
+                        Añadir al Carrito
+                    </button>
+                </div>
+            </div>
+        </div>
+       <!-- Product 11 -->
+        <div class="product-row">
+            <div class="product-content">
+                <div class="product-text right">
+                    <h4 class="product-name">CHINGUIRITO KG</h4>
+                    <p class="product-desc">carne deshilachada de guitarra seca (bacalao salado), previamente remojada y desalinizada.</p>
+                    <p class="product-price">S/. 40.00</p>
+                    <div class="quantity-controls">
+                        <button class="qty-btn" onclick="decreaseQty(11)">-</button>
+                        <div class="qty-display" id="qty-1">1</div>
+                        <button class="qty-btn" onclick="increaseQty(11)">+</button>
+                    </div>
+                    <br>
+                    <button class="add-to-cart-btn" onclick="addToCart('CHINGUIRITO KG', 180.00, 11)">
+                        Añadir al Carrito
+                    </button>
+                </div>
+                <div class="product-image-cell">
+                    <img src="chinguirito (1).png" alt="chinguirito" class="product-image">
+                </div>
+            </div>
+        </div>
+
+        
+        <!-- Footer -->
+        <div class="footer">
+            <div class="font-size: 20px; font-weight: 300; letter-spacing: 3px; color: #FFF; margin-bottom: 15px;">CHAKUPE</div>
+            
+            <div class="social-icons">
+               
+            
+            <p class="footer-text">
+              
+            </p>
+        </div>
+    </div>
+
+    <!-- Cart Float Button -->
+    <div class="cart-float" onclick="openCart()" style="display: none;" id="cartFloat">
+        🛒
+        <span class="cart-badge" id="cartBadge">0</span>
+    </div>
+
+    <!-- WhatsApp Float Button -->
+    <a href="https://wa.me/51999999999?text=Hola,%20tengo%20una%20consulta" class="whatsapp-float" target="_blank">
+        💬
+    </a>
+
+    <script>
+        // Variables globales
+        let currentUser = null;
+        let cart = [];
+
+        // Inicializar
+        window.onload = function() {
+            checkAuth();
+        };
+
+        function checkAuth() {
+            const user = sessionStorage.getItem('chakupeUser');
+            if (user) {
+                currentUser = JSON.parse(user);
+                showUserBar();
+            }
+        }
+
+        function showAuthModal() {
+            document.getElementById('authModal').classList.add('active');
+        }
+
+        function hideAuthModal() {
+            document.getElementById('authModal').classList.remove('active');
+        }
+
+        function showLogin() {
+            document.getElementById('loginForm').style.display = 'block';
+            document.getElementById('registerForm').style.display = 'none';
+        }
+
+        function showRegister() {
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('registerForm').style.display = 'block';
+        }
+
+        function register() {
+            const name = document.getElementById('regName').value;
+            const email = document.getElementById('regEmail').value;
+            const phone = document.getElementById('regPhone').value;
+            const password = document.getElementById('regPassword').value;
+
+            if (!name || !email || !phone || !password) {
+                alert('Por favor completa todos los campos');
+                return;
+            }
+
+            const user = { name, email, phone };
+            currentUser = user;
+            sessionStorage.setItem('chakupeUser', JSON.stringify(user));
+            
+            hideAuthModal();
+            showUserBar();
+            alert('¡Registro exitoso! Ahora puedes agregar productos al carrito.');
+        }
+
+        function login() {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            if (!email || !password) {
+                alert('Por favor completa todos los campos');
+                return;
+            }
+
+            // Simulación de login (en producción verificarías con backend)
+            const user = { name: email.split('@')[0], email, phone: '+51999999999' };
+            currentUser = user;
+            sessionStorage.setItem('chakupeUser', JSON.stringify(user));
+            
+            hideAuthModal();
+            showUserBar();
+            alert('¡Bienvenido! Ahora puedes agregar productos al carrito.');
+        }
+
+        function logout() {
+            currentUser = null;
+            cart = [];
+            sessionStorage.removeItem('chakupeUser');
+            document.getElementById('userBar').style.display = 'none';
+            document.getElementById('cartFloat').style.display = 'none';
+            updateCartBadge();
+            showAuthModal();
+        }
+
+        function showUserBar() {
+            document.getElementById('userBar').style.display = 'flex';
+            document.getElementById('userName').textContent = currentUser.name;
+            document.getElementById('cartFloat').style.display = 'flex';
+        }
+
+        function addToCart(productName, price, productId) {
+            if (!currentUser) {
+                alert('Por favor inicia sesión para agregar productos al carrito');
+                showAuthModal();
+                return;
+            }
+
+            const quantity = parseInt(document.getElementById(`qty-${productId}`).textContent);
+            
+            for (let i = 0; i < quantity; i++) {
+                cart.push({ name: productName, price: price });
+            }
+            
+            updateCartBadge();
+            alert(`${quantity} x ${productName} agregado al carrito`);
+        }
+
+        function increaseQty(productId) {
+            const qtyElement = document.getElementById(`qty-${productId}`);
+            let currentQty = parseInt(qtyElement.textContent);
+            qtyElement.textContent = currentQty + 1;
+        }
+
+        function decreaseQty(productId) {
+            const qtyElement = document.getElementById(`qty-${productId}`);
+            let currentQty = parseInt(qtyElement.textContent);
+            if (currentQty > 1) {
+                qtyElement.textContent = currentQty - 1;
+            }
+        }
+
+        function updateCartBadge() {
+            const badge = document.getElementById('cartBadge');
+            badge.textContent = cart.length;
+        }
+
+        function openCart() {
+            if (cart.length === 0) {
+                alert('Tu carrito está vacío');
+                return;
+            }
+
+            const cartItems = document.getElementById('cartItems');
+            cartItems.innerHTML = '';
+            let total = 0;
+
+            cart.forEach((item, index) => {
+                total += item.price;
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'cart-item';
+                itemDiv.innerHTML = `
+                    <span>${item.name}</span>
+                    <span>S/. ${item.price.toFixed(2)}</span>
+                `;
+                cartItems.appendChild(itemDiv);
+            });
+
+            document.getElementById('cartTotal').textContent = `Total: S/. ${total.toFixed(2)}`;
+            document.getElementById('cartModal').classList.add('active');
+        }
+
+        function closeCart() {
+            document.getElementById('cartModal').classList.remove('active');
+        }
+
+        function sendToWhatsApp() {
+            if (cart.length === 0) {
+                alert('Tu carrito está vacío');
+                return;
+            }
+
+            let message = `*Nuevo Pedido - Chakupe*%0A%0A`;
+            message += `*Cliente:* ${currentUser.name}%0A`;
+            message += `*Email:* ${currentUser.email}%0A`;
+            message += `*Teléfono:* ${currentUser.phone}%0A%0A`;
+            message += `*Productos:*%0A`;
+
+            let total = 0;
+            cart.forEach((item, index) => {
+                message += `${index + 1}. ${item.name} - S/. ${item.price.toFixed(2)}%0A`;
+                total += item.price;
+            });
+
+            message += `%0A*Total: S/. ${total.toFixed(2)}*`;
+
+            const whatsappNumber = '51999999999'; // Cambiar por el número real
+            const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${message}`;
+            
+            window.open(whatsappUrl, '_blank');
+            
+            // Limpiar carrito después de enviar
+            cart = [];
+            updateCartBadge();
+            closeCart();
+            alert('Pedido enviado por WhatsApp. ¡Gracias por tu compra!');
+        }
+    </script>
+</body>
+</html>
